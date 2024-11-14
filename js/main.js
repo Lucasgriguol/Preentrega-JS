@@ -123,6 +123,13 @@ function crearCarrito() {
         const cartContent = document.createElement('div');
         cartContent.className = 'cart-content';
 
+        // Crear y agregar la X para cerrar el carrito
+        const closeButton = document.createElement('button');
+        closeButton.className = 'cerrarCarrito';
+        closeButton.textContent = 'X';
+        closeButton.onclick = cerrarCarrito;
+        cartContent.appendChild(closeButton);
+
         const cartTitle = document.createElement('h2');
         cartTitle.textContent = 'Carrito';
         cartTitle.style.color = 'white';
@@ -251,4 +258,3 @@ function checkout() {
     alert('¡Gracias por tu compra!');
     eliminarTodo();
 }
-

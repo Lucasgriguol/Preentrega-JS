@@ -420,16 +420,20 @@ li {
 .carrito {
   position: fixed;
   top: 0;
-  right: -400px;  /* Ajustamos el carrito fuera de la vista cuando se cierra */
+  right: -400px;
+  /* Ajustamos el carrito fuera de la vista cuando se cierra */
   width: 400px;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.85); /* Fondo más oscuro con transparencia */
-  box-shadow: -3px 0 15px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+  background-color: rgba(0, 0, 0, 0.85);
+  /* Fondo más oscuro con transparencia */
+  box-shadow: -3px 0 15px rgba(0, 0, 0, 0.5);
+  /* Sombra más pronunciada */
   padding: 20px;
   z-index: 1000;
   overflow-y: auto;
   transition: right 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 10px 0 0 10px; /* Bordes redondeados para el carrito */
+  border-radius: 10px 0 0 10px;
+  /* Bordes redondeados para el carrito */
 }
 
 .carrito h2 {
@@ -553,6 +557,45 @@ li {
 .cerrarCarrito:hover {
   background-color: #c0392b;
   transform: scale(1.1);
+}
+
+/* Botón "X" para cerrar el carrito */
+.cerrarCarrito {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 30px;
+  height: 30px;
+  background-color: #e74c3c;
+  /* Fondo rojo */
+  color: white;
+  /* Color de la X */
+  font-size: 20px;
+  /* Tamaño de la X */
+  font-weight: bold;
+  border: none;
+  border-radius: 50%;
+  /* Redondear el botón */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  z-index: 1100;
+}
+
+.cerrarCarrito:hover {
+  background-color: #c0392b;
+  /* Color más oscuro al pasar el ratón */
+  transform: scale(1.1);
+  /* Efecto de zoom al pasar el ratón */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  /* Sombra suave */
+}
+
+.cerrarCarrito:focus {
+  outline: none;
+  /* Quitar el borde cuando se hace clic */
 }
 
 /*# sourceMappingURL=style.css.map */
