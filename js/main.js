@@ -1,59 +1,59 @@
 // Datos de los productos
 const productos = [
-    {
-        nombre: "La iniquidad",
-        descripcion: "¿Qué es iniquidad? - El conflicto entre las dos simientes - Las Moradas de iniquidad - Operación y Manifestación de la iniquidad.",
-        precio: 7400,
-        imagen: "./recursos/la iniquidad.webp"
-    },
-    {
-        nombre: "Sentados en lugares celestiales",
-        descripcion: "Este es un libro de Reforma que lo llevará a entender el Gobierno de Dios y Su poder.",
-        precio: 7700,
-        imagen: "./recursos/lugares celestiales.webp"
-    },
-    {
-        nombre: "La llave maestra de Dios",
-        descripcion: "Este libro está lleno de respuestas para vencer la adversidad tanto emocional, física, como también financiera.",
-        precio: 7100,
-        imagen: "./recursos/llave maestra.webp"
-    },
-    {
-        nombre: "Hijos del trueno",
-        descripcion: "Alrededor del mundo, el Espíritu Santo está despertando el espíritu de miles de niños y niñas, introduciéndolos en un mover sobrenatural.",
-        precio: 6500,
-        imagen: "./recursos/trueno.webp"
-    },
-    {
-        nombre: "Ayuno cuántico",
-        descripcion: "Ayuno y cuántico; la combinación de ambos, te llevará al entendimiento del mundo invisible de Dios.",
-        precio: 6800,
-        imagen: "./recursos/ayuno.webp"
-    },
-    {
-        nombre: "Sansón, la historia se repite",
-        descripcion: "Los tiempos finales de la iglesia muestran una asombrosa similitud con la historia que relata la vida de Sansón.",
-        precio: 7000,
-        imagen: "./recursos/sanson.webp"
-    }
+    { nombre: "La iniquidad", descripcion: "¿Qué es iniquidad?", precio: 7400, imagen: "./recursos/la iniquidad.webp" },
+    { nombre: "Sentados en lugares celestiales", descripcion: "Este es un libro de Reforma", precio: 7700, imagen: "./recursos/lugares celestiales.webp" },
+    { nombre: "La llave maestra de Dios", descripcion: "Este libro está lleno de respuestas", precio: 7100, imagen: "./recursos/llave maestra.webp" },
+    { nombre: "Hijos del trueno", descripcion: "El Espíritu Santo está despertando el espíritu", precio: 6500, imagen: "./recursos/trueno.webp" },
+    { nombre: "Ayuno cuántico", descripcion: "Ayuno y cuántico combinados", precio: 6800, imagen: "./recursos/ayuno.webp" },
+    { nombre: "Sansón, la historia se repite", descripcion: "Los tiempos finales muestran similitudes", precio: 7000, imagen: "./recursos/sanson.webp" }
 ];
 
-// Cargar carrito de localStorage si existe
-let carrito = JSON.parse(localStorage.getItem('carrito')) || {};
-let total = 0;  // Variable para el total del carrito
+let carrito = JSON.parse(localStorage.getItem('carrito')) || {};  // Cargar el carrito desde localStorage
+let total = 0;
+let formularioPagoVisible = false;  // Controla si el formulario de pago está visible
 
-// Mostrar los productos en el DOM
+// Crear la barra de búsqueda y mostrarla en el DOM
+function crearBarraBusqueda() {
+    const header = document.querySelector('header');
+    
+    const searchContainer = document.createElement('div');
+    searchContainer.classList.add('search-container');
+
+    const inputSearch = document.createElement('input');
+    inputSearch.type = 'text';
+    inputSearch.id = 'search';
+    inputSearch.placeholder = 'Buscar...';
+
+    searchContainer.appendChild(inputSearch);
+    header.appendChild(searchContainer);
+
+    // Agregar evento para filtrar productos
+    inputSearch.addEventListener('input', (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        localStorage.setItem('searchTerm', searchTerm);
+        const productosFiltrados = productos.filter(producto =>
+            producto.nombre.toLowerCase().includes(searchTerm)
+        );
+        mostrarProductos(productosFiltrados);
+    });
+
+    // Cargar término de búsqueda guardado en localStorage
+    const searchTerm = localStorage.getItem('searchTerm') || '';
+    inputSearch.value = searchTerm;
+    const productosFiltrados = productos.filter(producto =>
+        producto.nombre.toLowerCase().includes(searchTerm)
+    );
+    mostrarProductos(productosFiltrados);
+}
+
+// Mostrar productos en la página
 function mostrarProductos(productosFiltrados) {
     const contenedorLibros = document.querySelector('.contenedorlibro');
-    
-    // Limpiar el contenedor antes de mostrar productos nuevos
     contenedorLibros.innerHTML = '';
-
     if (productosFiltrados.length === 0) {
         contenedorLibros.innerHTML = '<p>No se encontraron productos.</p>';
         return;
     }
-
     productosFiltrados.forEach(producto => {
         const divCard = document.createElement('div');
         divCard.classList.add('card');
@@ -92,28 +92,7 @@ function mostrarProductos(productosFiltrados) {
     });
 }
 
-// Función de búsqueda
-document.getElementById('search').addEventListener('input', function (event) {
-    const searchTerm = event.target.value.toLowerCase();
-    const productosFiltrados = productos.filter(producto => producto.nombre.toLowerCase().includes(searchTerm));
-    
-    // Guardar término de búsqueda en localStorage
-    localStorage.setItem('searchTerm', searchTerm);
-
-    mostrarProductos(productosFiltrados);  // Mostrar productos filtrados
-});
-
-// Recuperar el término de búsqueda de localStorage y mostrar productos
-document.addEventListener('DOMContentLoaded', () => {
-    const searchTerm = localStorage.getItem('searchTerm') || '';
-    document.getElementById('search').value = searchTerm;
-
-    const productosFiltrados = productos.filter(producto => producto.nombre.toLowerCase().includes(searchTerm.toLowerCase()));
-    mostrarProductos(productosFiltrados);
-    actualizarCarrito();  // Asegurarnos de que el carrito se actualice
-});
-
-// Crear carrito si no existe
+// Crear carrito en el DOM
 function crearCarrito() {
     if (!document.getElementById('cart')) {
         const cart = document.createElement('div');
@@ -123,7 +102,6 @@ function crearCarrito() {
         const cartContent = document.createElement('div');
         cartContent.className = 'cart-content';
 
-        // Crear y agregar la X para cerrar el carrito
         const closeButton = document.createElement('button');
         closeButton.className = 'cerrarCarrito';
         closeButton.textContent = 'X';
@@ -142,7 +120,7 @@ function crearCarrito() {
         const checkoutButton = document.createElement('button');
         checkoutButton.className = 'checkout';
         checkoutButton.textContent = 'Ir al checkout';
-        checkoutButton.onclick = checkout;
+        checkoutButton.onclick = mostrarFormularioPago;
         cartContent.appendChild(checkoutButton);
 
         const totalElement = document.createElement('div');
@@ -168,19 +146,7 @@ function crearCarrito() {
     }
 }
 
-// Mostrar carrito
-function mostrarCarrito() {
-    document.getElementById('cart').style.right = '0';
-    document.getElementById('cart-background').classList.add('visible');
-}
-
-// Ocultar carrito
-function cerrarCarrito() {
-    document.getElementById('cart').style.right = '-400px';
-    document.getElementById('cart-background').classList.remove('visible');
-}
-
-// Agregar al carrito
+// Agregar productos al carrito
 function agregarAlCarrito(producto, precio) {
     crearCarrito();
 
@@ -191,10 +157,10 @@ function agregarAlCarrito(producto, precio) {
     }
 
     actualizarCarrito();
-    mostrarCarrito();
+    localStorage.setItem('carrito', JSON.stringify(carrito)); // Guardar carrito en localStorage
 }
 
-// Actualizar carrito en el DOM
+// Función para actualizar el carrito en el DOM
 function actualizarCarrito() {
     const cartItems = document.getElementById('cart-items');
     const totalPrice = document.getElementById('total-price');
@@ -205,7 +171,6 @@ function actualizarCarrito() {
     for (let producto in carrito) {
         const item = carrito[producto];
         const li = document.createElement('li');
-
         li.textContent = `${producto} - $${item.precio} x ${item.cantidad}`;
 
         const eliminarUnoButton = document.createElement('button');
@@ -233,19 +198,6 @@ function actualizarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(carrito));
 }
 
-// Eliminar producto del carrito
-function eliminarProducto(producto, cantidad) {
-    if (carrito[producto]) {
-        carrito[producto].cantidad -= cantidad;
-
-        if (carrito[producto].cantidad <= 0) {
-            delete carrito[producto];
-        }
-
-        actualizarCarrito();
-    }
-}
-
 // Eliminar todo del carrito
 function eliminarTodo() {
     carrito = {};
@@ -253,8 +205,11 @@ function eliminarTodo() {
     actualizarCarrito();
 }
 
-// Función de checkout
-function checkout() {
-    alert('¡Gracias por tu compra!');
-    eliminarTodo();
+// Cerrar el carrito
+function cerrarCarrito() {
+    document.getElementById('cart').style.right = '-400px';
+    document.getElementById('cart-background').classList.remove('visible');
 }
+
+// Cargar la barra de búsqueda al inicio
+crearBarraBusqueda();
