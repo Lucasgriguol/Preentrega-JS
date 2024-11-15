@@ -416,25 +416,22 @@ li {
   background-color: #218838;
 }
 
-/* Carrito deslizable con JavaScript */
+/* Carrito deslizable*/
 .carrito {
   position: fixed;
   top: 0;
   right: -400px;
-  /* Ajustamos el carrito fuera de la vista cuando se cierra */
   width: 400px;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
-  /* Fondo más oscuro con transparencia */
+  background-color: rgba(0, 0, 0, 0.88);
   box-shadow: -3px 0 15px rgba(0, 0, 0, 0.5);
-  /* Sombra más pronunciada */
   padding: 20px;
   z-index: 1000;
   overflow-y: auto;
-  transition: right 0.3s ease, box-shadow 0.3s ease;
+  transition: right 0.5s ease, box-shadow 0.3s ease;
   border-radius: 10px 0 0 10px;
-  /* Bordes redondeados para el carrito */
 }
+
 
 .carrito h2 {
   text-align: center;
@@ -510,7 +507,7 @@ li {
   font-size: 16px;
   margin-top: 15px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.5s ease, transform 0.2s ease;
 }
 
 .carrito .checkout:hover,
@@ -540,26 +537,11 @@ li {
   visibility: visible;
 }
 
-.cerrarCarrito {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 10px;
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
 .cerrarCarrito:hover {
   background-color: #c0392b;
   transform: scale(1.1);
 }
 
-/* Botón "X" para cerrar el carrito */
 .cerrarCarrito {
   position: absolute;
   top: 10px;
@@ -567,15 +549,11 @@ li {
   width: 30px;
   height: 30px;
   background-color: #e74c3c;
-  /* Fondo rojo */
   color: white;
-  /* Color de la X */
   font-size: 20px;
-  /* Tamaño de la X */
   font-weight: bold;
   border: none;
   border-radius: 50%;
-  /* Redondear el botón */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -586,18 +564,14 @@ li {
 
 .cerrarCarrito:hover {
   background-color: #c0392b;
-  /* Color más oscuro al pasar el ratón */
   transform: scale(1.1);
-  /* Efecto de zoom al pasar el ratón */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  /* Sombra suave */
 }
 
 .cerrarCarrito:focus {
   outline: none;
-  /* Quitar el borde cuando se hace clic */
 }
-/* Estilo general del formulario de pago */
+
 #payment-form {
   background-color: #fff;
   padding: 20px;
@@ -609,7 +583,6 @@ li {
   font-family: 'Arial', sans-serif;
 }
 
-/* Estilo para los inputs */
 #payment-form input {
   width: 100%;
   padding: 10px;
@@ -624,11 +597,10 @@ li {
   color: #aaa;
 }
 
-/* Estilo para el botón de pago */
 #payment-form button {
   width: 100%;
   padding: 12px;
-  background-color: #28a745; /* Verde para indicar acción positiva */
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 5px;
@@ -638,33 +610,30 @@ li {
 }
 
 #payment-form button:hover {
-  background-color: #218838; /* Un verde más oscuro al pasar el mouse */
+  background-color: #218838;
 }
 
-/* Estilo para cada campo de entrada */
 #payment-form input[type="text"] {
   margin-bottom: 15px;
 }
 
 #payment-form input[type="text"]:focus {
-  border-color: #007bff; /* Resaltar los campos cuando están enfocados */
+  border-color: #007bff;
   outline: none;
 }
 
-/* Estilo para un contenedor de todo el formulario */
 #payment-form div {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-/* Margen para el primer input */
 #payment-form input[name="nombre"] {
   margin-top: 0;
 }
 
-/* Estilo para los textos de los campos */
 #payment-form input::placeholder {
   font-style: italic;
 }
+
 /*# sourceMappingURL=style.css.map */

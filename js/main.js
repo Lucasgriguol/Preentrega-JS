@@ -225,7 +225,6 @@ function cerrarCarrito() {
     document.getElementById('cart-background').classList.remove('visible');
 }
 
-// Mostrar el formulario de pago
 function mostrarFormularioPago() {
     if (formularioPagoVisible) {
         return; // Si el formulario ya está visible, no hacemos nada
@@ -282,7 +281,86 @@ function mostrarFormularioPago() {
 
     // Añadir el formulario al carrito
     cartContent.appendChild(formulario);
+
+    // Crear un div para los mensajes de validación (error o éxito)
+    const mensajeDiv = document.createElement('div');
+    mensajeDiv.id = 'mensaje-validacion';
+    cartContent.appendChild(mensajeDiv);
+
+    // Cargar datos previos desde localStorage (si existen)
+    const datosGuardados = JSON.parse(localStorage.getItem('datosTarjeta')) || {};
+    if (datosGuardados.nombre) {
+        nombreInput.value = datosGuardados.nombre;
+    }
+    if (datosGuardados.fecha) {
+        fechaInput.value = datosGuardados.fecha;
+    }
+
+    // Agregar un evento al enviar el formulario
+    formulario.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario para realizar validación
+
+        // Limpiar mensaje de validación anterior
+        mensajeDiv.innerHTML = '';
+
+        const nombre = nombreInput.value.trim();
+        const tarjeta = tarjetaInput.value.trim();
+        const fecha = fechaInput.value.trim();
+        const cvv = cvvInput.value.trim();
+
+        // Validar el nombre
+        if (!nombre) {
+            mensajeDiv.textContent = 'Por favor, ingrese su nombre completo.';
+            mensajeDiv.style.color = 'red'; // Mostrar el mensaje en rojo (error)
+            return;
+        }
+
+        // Validar número de tarjeta (solo números y 16 dígitos)
+        const tarjetaRegex = /^\d{16}$/;
+        if (!tarjetaRegex.test(tarjeta)) {
+            mensajeDiv.textContent = 'El número de tarjeta debe tener 16 dígitos.';
+            mensajeDiv.style.color = 'red'; // Mostrar el mensaje en rojo (error)
+            return;
+        }
+
+        // Validar fecha de vencimiento (MM/AA)
+        const fechaRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        if (!fechaRegex.test(fecha)) {
+            mensajeDiv.textContent = 'La fecha de vencimiento debe tener el formato MM/AA.';
+            mensajeDiv.style.color = 'red'; // Mostrar el mensaje en rojo (error)
+            return;
+        }
+
+        // Validar el CVV (3 dígitos)
+        const cvvRegex = /^\d{3}$/;
+        if (!cvvRegex.test(cvv)) {
+            mensajeDiv.textContent = 'El código de seguridad (CVV) debe tener 3 dígitos.';
+            mensajeDiv.style.color = 'red'; // Mostrar el mensaje en rojo (error)
+            return;
+        }
+
+        // Si todo es válido, mostrar mensaje de éxito y vaciar carrito
+        mensajeDiv.textContent = 'Datos correctos. ¡Gracias por tu compra!';
+        mensajeDiv.style.color = 'green'; // Mostrar el mensaje en verde (éxito)
+
+        // Guardar los datos de la tarjeta (sin número ni CVV)
+        const datosParaGuardar = {
+            nombre: nombre,
+            fecha: fecha
+        };
+        localStorage.setItem('datosTarjeta', JSON.stringify(datosParaGuardar)); // Guardamos los datos
+
+        // Eliminar todos los productos del carrito
+        carrito = {}; // Vaciar el carrito
+        localStorage.removeItem('carrito'); // Eliminar el carrito del localStorage
+        actualizarCarrito(); // Actualizar la vista del carrito para reflejar que está vacío
+
+        // Opcionalmente, puedes esconder el formulario y mostrar un mensaje final de confirmación
+        formulario.style.display = 'none'; // Ocultamos el formulario de pago
+        checkoutButton.style.display = 'block'; // Mostramos el botón de checkout nuevamente
+    });
 }
+
 
 // Iniciar la barra de búsqueda
 crearBarraBusqueda();
